@@ -1,0 +1,154 @@
+﻿@model Aplicacion.CasosDeUso.RealizarPrestamo.DescriptorPrestamoOutput
+
+@{
+    ViewBag.Title = "Cronograma Generado";
+    string prestamo = "";
+    switch (Model.TipoPrestamo)
+    {
+        case "Préstamo Efectivo":
+            prestamo = "Efectivo";
+            break;
+        case "Crédito Vehicular":
+            prestamo = "Vehicular";
+            break;
+
+        case "Crédito Hipotecario":
+            prestamo = "Hipotecario";
+            break;
+    }
+    }
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Cronograma - @Model.TipoPrestamo</h4>
+                <h5>
+                    Codigo: <br />
+                    @Model.CodigoPrestamo
+                </h5>
+
+                <h5>
+                    Numero Cuotas: <br />
+                    @Model.NumeroCuotas
+                </h5>
+
+                <h5>
+                    Es Valido: <br />
+                    @Model.EsValido
+                </h5>
+
+                <h5>
+                    CEM Cliente: <br />
+                    @Model.CemPrestatario
+                </h5>
+
+                @if (Model.EstaRelacionadoAUnBien)
+                {
+                    <h5>
+                        Nombre del bien: <br />
+                        @Model.NombreDelBien
+                    </h5>
+                }
+                <div class="table-responsive m-t-40">
+                    <table id="miTabla" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <th>
+                            N° Cuota
+                        </th>
+                        <th>
+                            Fecha Vencimiento
+                        </th>
+                        <th>
+                            Saldo
+                        </th>
+                        <th>
+                            Amortización
+                        </th>
+                        <th>
+                            Interés
+                        </th>
+                        <th>
+                            Desgravamen
+                        </th>
+                        @if (Model.EstaRelacionadoAUnBien)
+                        {
+                            <th>
+                                Seguro del bien
+                            </th>
+                        }
+                        <th>
+                            Cuota a Pagar
+                        </th>
+                        </thead>
+                        <tbody>
+                            @foreach (var cuota in Model.DescriptorCronograma)
+                            {
+                                <tr>
+                                    <th>
+                                        @cuota.NumeroCuota
+                                    </th>
+                                    <td>
+                                        @cuota.FechaVencimiento.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @cuota.Saldo
+                                    </td>
+                                    <td>
+                                        @cuota.Amortizacion
+                                    </td>
+                                    <td>
+                                        @cuota.InteresMensual
+                                    </td>
+                                    <td>
+                                        @cuota.SeguroDesgravamenMensual
+                                    </td>
+                                    @if (Model.EstaRelacionadoAUnBien)
+                                    {
+                                        <td>
+                                            @cuota.SeguroDelBien
+                                        </td>
+                                    }
+                                    <td>
+                                        @cuota.CuotaFija
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table"></table>
+
+@using (Html.BeginForm("Realizar", "Prestamo",new {tipoPrestamo = prestamo }, FormMethod.Post, null))
+{
+    <div class="offset-sm-3 col-sm-9">
+        <button type="submit" class="btn btn-info waves-effect waves-light m-t-10">Guardar</button>
+    </div>
+}
+
+@Html.ActionLink("Regresar a la simulación", "Index", "Prestamo")
+
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<script src="~/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#miTabla').DataTable({
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            "language": {
+                "url": "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+            },
+            "columnDefs": [
+                { "searchable": false, "targets": 0 },
+                { "targets": '_all', "className": "text-center" }],
+            "order": [[0, 'asc']],
+            responsive: true
+        });
+    });
+</script>

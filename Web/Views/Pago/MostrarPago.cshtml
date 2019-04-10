@@ -1,0 +1,91 @@
+﻿@model Aplicacion.CasosDeUso.RealizarPago.DescriptorPago
+
+@{
+    ViewBag.Title = "Información de Pago";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Id Cajero: @Model.Cajero_Id</h4>
+                <h6 class="card-subtitle">Nombre Cajero: @Model.Cajero_NombreCompleto</h6>
+                <dl class="dl-horizontal">
+                    <dt>
+                        Código de Préstamo
+                    </dt>
+                    <dd>
+                        @ViewBag.Codigo_Prestamo
+                    </dd>
+
+                    <dt>
+                        Id de Cliente
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Prestatario_Id)
+                    </dd>
+
+                    <dt>
+                        Nombre de Cliente
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Prestatario_NombreCompleto)
+                    </dd>
+
+                    <dt>
+                        Número de Cuota a Pagar
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Cuota_NumeroCuota)
+                    </dd>
+
+                    <dt>
+                        Fecha de Vencimiento
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Cuota_FechaVencimiento)
+                    </dd>
+
+                    <dt>
+                        Monto de Cuota
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Pago_MontoCuota)
+                    </dd>
+
+                    <dt>
+                        Monto de Mora
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Pago_MontoMora)
+                    </dd>
+
+                    <dt>
+                        Importe a Pagar
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Pago_Importe)
+                    </dd>
+
+                    <dt>
+                        Fecha de Pago
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Pago_Fecha)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm("RegistrarPago", "Pago", new { dniCliente = ViewBag.Dni_Cliente, codigoPrestamo = ViewBag.Codigo_Prestamo, numeroCuota = Model.Cuota_NumeroCuota }, FormMethod.Post, new { @class = "form-horizontal form-material" }))
+                {
+                    <div class="form-group m-b-0">
+                        <div class="offset-sm-3 col-sm-9">
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-t-10">Registrar Pago</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

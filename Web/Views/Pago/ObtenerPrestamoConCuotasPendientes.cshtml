@@ -1,0 +1,70 @@
+﻿@model Aplicacion.CasosDeUso.RealizarPrestamo.DescriptorPrestamoOutput
+
+@{
+    ViewBag.Title = "Información de Préstamo";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Préstamo - @Model.TipoPrestamo</h4>
+                <h6 class="card-subtitle">Código: @Model.CodigoPrestamo | Número Cuotas: @Model.NumeroCuotas</h6>
+                <div class="table-responsive m-t-40">
+                    <table id="miTabla" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th> N° Cuota </th>
+                                <th> Monto de Cuota </th>
+                                <th> Fecha de Vencimiento </th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var cuota in Model.DescriptorCronograma)
+                            {
+                                <tr>
+                                    <th>
+                                        @cuota.NumeroCuota
+                                    </th>
+                                    <td>
+                                        @cuota.CuotaFija
+                                    </td>
+                                    <td>
+                                        @cuota.FechaVencimiento.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        <span class="btn-group btn-group-sm" role="group">
+                                            <a href="@Url.Action("MostrarPago", "Pago", new { dniCliente = ViewBag.Dni_Cliente,codigoPrestamo = Model.CodigoPrestamo, numeroCuota = cuota.NumeroCuota})" class="btn btn-primary btn-sm  mdi mdi-cash-usd" data-toggle="tooltip" data-placement="top" title="Pagar" role="button"></a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<script src="~/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#miTabla').DataTable({
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            "language": {
+                "url": "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+            },
+            "columnDefs": [
+                { "searchable": false, "orderable": false, "targets": 3 },
+                { "searchable": false, "targets": 0 },
+                { "targets": '_all', "className": "text-center" }],
+            "order": [[0, 'asc']],
+            responsive: true
+        });
+    });
+</script>

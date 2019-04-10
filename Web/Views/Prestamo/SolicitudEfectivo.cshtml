@@ -1,0 +1,51 @@
+﻿@model Web.Models.ViewModels.SolicitudPrestamo
+
+@{
+    ViewBag.Title = "Solicitud Préstamo Efectivo";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="box-title m-b-0">Préstamo @Model.TipoPrestamo</h3>
+                <p class="text-muted m-b-30 font-13"> <b>Analista:</b> @ViewBag.NombreAnalistaFinanciero</p>
+                @using (Html.BeginForm("Simular", "Prestamo", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.TipoPrestamo)
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.DniCliente, new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DniCliente, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                            @Html.ValidationMessageFor(model => model.DniCliente, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Importe, new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.Importe, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                            @Html.ValidationMessageFor(model => model.Importe, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.NumeroCuotas, new { @class = "col-sm-3 text-right control-label col-form-label" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.NumeroCuotas, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                            @Html.ValidationMessageFor(model => model.NumeroCuotas, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group m-b-0">
+                        <div class="offset-sm-3 col-sm-9">
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-t-10">Simular</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
